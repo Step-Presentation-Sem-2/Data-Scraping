@@ -3,21 +3,24 @@ import requests
 import boto3
 from datetime import datetime
 from botocore.exceptions import NoCredentialsError, BotoCoreError
+from dotenv import load_dotenv
+load_dotenv()
 
 
 class scrapingUsingAPI():
+
     """
     Input: API_Key
     Output: Images saved to the S3 Bucket
     """
 
-    def __init__(self, api_key, api_url, bucket_name="scraped-images-b1"):
+    def __init__(self, api_key, api_url):
 
         self.api_key = api_key
         self.api_url = api_url
-        self.bucket_name = bucket_name
+        self.bucket_name = os.getenv("s3_bucket_name")
         self.aws_access_key_id = os.getenv("aws_access_key_id"),
-        self.aws_secret_access_key = os.getenv("aws_secret_access_key"),
+        self.aws_secret_access_key = os.getenv("aws_secret_access_key")
         self.headers = {
             'Authorization': self.api_key
         }
@@ -87,8 +90,8 @@ class scrapingUsingAPI():
         print("keys", self.aws_access_key_id, self.aws_secret_access_key)
         s3 = boto3.client(
             "s3",
-            aws_access_key_id= "AKIAYS2NQOYPO6YQKVPA", # self.aws_access_key_id,
-            aws_secret_access_key= "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" # self.aws_secret_access_key
+            aws_access_key_id = self.aws_access_key_id,
+            aws_secret_access_key = self.aws_secret_access_key
         )
 
         try:
@@ -109,7 +112,6 @@ def automated_scraping():
     # Creating a scrapingUsingAPI instance
     scrap_using_api = scrapingUsingAPI(api_url='https://api.pexels.com/v1/search',
                                        api_key='7Ebv0WB9C1ThJK6hxRxNpX9akqF1QKnb0qBFF4jVITwxdPl4cIlRoe7s')
-
 
     scrap_using_api.scrap_image(1, 15)
 
