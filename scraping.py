@@ -115,9 +115,9 @@ def automated_scraping():
     # Creating a scrapingUsingAPI instance
     scrap_using_api = scrapingUsingAPI(api_url='https://api.pexels.com/v1/search',
                                        api_key='7Ebv0WB9C1ThJK6hxRxNpX9akqF1QKnb0qBFF4jVITwxdPl4cIlRoe7s')
-    page=1
+    page=2
     per_page=15
-    # Default Condition to check
+    # Default Condition to check 
     while True:
         if scrap_using_api.scrap_image(page,per_page):
             
