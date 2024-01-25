@@ -117,6 +117,7 @@ def automated_scraping():
                                        api_key='7Ebv0WB9C1ThJK6hxRxNpX9akqF1QKnb0qBFF4jVITwxdPl4cIlRoe7s')
     page=1
     per_page=15
+    # Default Condition to check
     while True:
         if scrap_using_api.scrap_image(page,per_page):
             
