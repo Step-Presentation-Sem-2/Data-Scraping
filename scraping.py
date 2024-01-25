@@ -31,6 +31,8 @@ class scrapingUsingAPI():
         file_name = f"{time_in_format}.jpg"
         return file_name
 
+       
+
     def scrap_image(self, page, per_page):
         """
         This function uses the API Key to get a headshot image.
@@ -46,6 +48,7 @@ class scrapingUsingAPI():
             self.api_url, headers=self.headers, params=params)
 
         self.process_response(response)
+        
 
     def process_response(self, response):
         """
@@ -112,8 +115,16 @@ def automated_scraping():
     # Creating a scrapingUsingAPI instance
     scrap_using_api = scrapingUsingAPI(api_url='https://api.pexels.com/v1/search',
                                        api_key='7Ebv0WB9C1ThJK6hxRxNpX9akqF1QKnb0qBFF4jVITwxdPl4cIlRoe7s')
+    page=1
+    per_page=15
+    while True:
+        if scrap_using_api.scrap_image(page,per_page):
+            
+            page+=1
+        else:
+            print("invalid")
 
-    scrap_using_api.scrap_image(1, 15)
+    # scrap_using_api.scrap_image(page,per_page )
 
 
 automated_scraping()
