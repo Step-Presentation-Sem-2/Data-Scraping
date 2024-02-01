@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup as bs
 import urllib.request
 
 class scraping_bs():
-
     '''
     Taking in a url as input and then outputing the images scraped using beautiful soup from each url
     '''
@@ -27,11 +26,12 @@ class scraping_bs():
                 urllib.request.urlretrieve(link_, os.path.join('downloaded_images_umass_1', img_name))
             except:
                 continue
+            
     def download(self):
-        response = requests.get(self.base_url)
-        soup = BeautifulSoup(response.text, 'html.parser')
+        response = requests.get(self.base_link)
+        soup = bs(response.text, 'html.parser')
         images = soup.find_all('td')
-        os.makedirs('downloaded_images_umass', exist_ok=True)
+        os.makedirs('downloaded_images_umass_1', exist_ok=True)
 
         for img in images:
             next_a_tag = img.find_next('a')
@@ -39,6 +39,10 @@ class scraping_bs():
                 img_name = next_a_tag['href']
                 link_ = self.get_link(img_name)
                 response = requests.get(link_)
-                soup = BeautifulSoup(response.text, 'html.parser')
+                soup = bs(response.text, 'html.parser')
                 imgs = soup.find_all('img')
                 self.get_image(imgs)
+
+base_link = 'https://vis-www.cs.umass.edu/lfw/alpha_all_1.html'  # Replace with the actual URL
+scraper = scraping_bs(base_link)
+scraper.download()
