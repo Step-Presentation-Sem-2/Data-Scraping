@@ -4,6 +4,10 @@ import requests
 import boto3
 from datetime import datetime
 from selenium import webdriver
+
+chromedriver_path = "C:/chromedriver-win64/chromedriver.exe"
+# driver = webdriver.Chrome(executable_path=chromedriver_path)
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from botocore.exceptions import NoCredentialsError, BotoCoreError
@@ -50,7 +54,7 @@ class AutomatedScraping():
         Starts a new Selenium browser session.
         :output: An instance of a Selenium browser.
         """
-        service = Service(executable_path=self.driver_path)
+        service = Service(executable_path=chromedriver_path)
         browser = webdriver.Chrome(service=service)
         browser.get(self.url)
         return browser
@@ -135,5 +139,5 @@ class AutomatedScraping():
 
 
 url = os.getenv("url")
-driver_path = os.getenv("driver_path")
-AutomatedScraping(url, driver_path)
+# driver_path = os.getenv("driver_path")
+AutomatedScraping(url, chromedriver_path)
