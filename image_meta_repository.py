@@ -17,7 +17,6 @@ class ImageMetaRepository:
             self.connection = sqlite3.connect(self.db_file)
         else:
             self.connection = sqlite3.connect(self.db_file)
-        self.init_db_schema()
 
     def init_db_schema(self):
         try:
