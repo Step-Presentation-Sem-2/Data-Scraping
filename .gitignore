@@ -3,3 +3,8 @@ downloaded_images/
 images/
 pexel_images/
 pexel_images_new/
+
+.env
+.db
+
+__pycache__/*

@@ -4,6 +4,7 @@ from pexels_scraper import PexelsScraper
 from pixabay_scraper import PixabayScraper
 from unsplash_scraper import UnsplashScraper
 from five_hundred_px_scraper import FiveHundredPxScraper
+from this_person_doesnot_exist_scraper import ThisPersonDoesnotExistScraper
 
 
 class ImageScraperFactory:
@@ -17,5 +18,7 @@ class ImageScraperFactory:
             return UnsplashScraper()
         elif source == ImageSource.FIVE_HUNDRED_PX:
             return FiveHundredPxScraper()
+        elif source == ImageSource.THIS_PERSON_DOESNOT_EXIST:
+            return ThisPersonDoesnotExistScraper()
         else:
             raise Exception(f"Unknown image source: {source.name}")
