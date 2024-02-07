@@ -3,3 +3,5 @@ boto3==1.34.27
 
 requests~=2.31.0
 botocore~=1.34.30
+selenium~=4.17.2
+validators~=0.22.0
