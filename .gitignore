@@ -5,6 +5,5 @@ pexel_images/
 pexel_images_new/
 
 .env
-.db
 
 __pycache__/*

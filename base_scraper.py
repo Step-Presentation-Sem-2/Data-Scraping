@@ -17,7 +17,7 @@ class BaseScraper:
     website_url = ""
     image_meta_repository = ImageMetaRepository()
     image_repository = None
-    batch_size = 100
+    batch_size = 200
     scraped_image_count = 0
 
     def __init__(self, scrape_website_url: str, image_repository_bucket: str):
