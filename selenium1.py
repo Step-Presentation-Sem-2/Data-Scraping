@@ -133,7 +133,7 @@ class AutomatedScraping():
 
         # browser.quit()
 
-    def save_image_to_S3_bucket(self, image_content, s3_file_name):
+    def save_image_to_s3_bucket(self, image_content, s3_file_name):
         """
         Saves the downloaded image to an S3 bucket.
 
