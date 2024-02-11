@@ -4,6 +4,8 @@ images/
 pexel_images/
 pexel_images_new/
 
-.env
 
+.env
 __pycache__/*
+newfolder/
+
