@@ -22,6 +22,7 @@ class ThisPersonDoesnotExistScraper(BaseScraper):
             self.save_image(response.content, image_hash, self.website, "")
             self.scraped_image_count += 1
             self.scrape_next_images()
+            
 
     def scrape_next_images(self):
         if self.scraped_image_count <= self.batch_size:
