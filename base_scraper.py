@@ -1,6 +1,3 @@
-# from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
-# from selenium.webdriver.chrome.options import Options
 import validators
 import hashlib
 import time
@@ -12,7 +9,6 @@ from image_repository import ImageRepository
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
-from botocore.exceptions import NoCredentialsError, BotoCoreError
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 from dotenv import load_dotenv
