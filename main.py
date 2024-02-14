@@ -1,10 +1,8 @@
 from dotenv import load_dotenv
+
 from scraper.image_scraper_factory import ImageScraperFactory
 from scraper.image_source import ImageSource
 from scraper.website_scrapers.pexels_scraper import PexelsScraper
-from dotenv import load_dotenv
-
-load_dotenv()
 
 load_dotenv()
 
