@@ -1,10 +1,10 @@
-from image_source import ImageSource
+from scraper.image_source import ImageSource
 from scraper.base_scraper import BaseScraper
-from website_scrapers.pexels_scraper import PexelsScraper
-from website_scrapers.pixabay_scraper import PixabayScraper
-from website_scrapers.unsplash_scraper import UnsplashScraper
-from website_scrapers.five_hundred_px_scraper import FiveHundredPxScraper
-from website_scrapers.this_person_doesnot_exist_scraper import ThisPersonDoesnotExistScraper
+from scraper.website_scrapers.pexels_scraper import PexelsScraper
+from scraper.website_scrapers.pixabay_scraper import PixabayScraper
+from scraper.website_scrapers.unsplash_scraper import UnsplashScraper
+from scraper.website_scrapers.five_hundred_px_scraper import FiveHundredPxScraper
+from scraper.website_scrapers.this_person_doesnot_exist_scraper import ThisPersonDoesnotExistScraper
 
 
 class ImageScraperFactory:
