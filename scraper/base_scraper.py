@@ -77,6 +77,7 @@ class BaseScraper:
         print("scrape_images")
 
     def scrape_next_images(self):
+        self.scroll_down(self.browser)
         print("scrape_next_images")
 
     def save_image(self, image: bytes, url: str, host: str, e_tag: str):

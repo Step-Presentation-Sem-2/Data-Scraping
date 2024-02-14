@@ -21,7 +21,7 @@ class PexelsScraper(BaseScraper):
 
             while self.new_image_count < self.max_new_image_count:
                 # scroll down the page
-                self.scroll_down(self.browser)
+                self.scrape_next_images()
 
                 # Ensure the column div is present before proceeding to find images within it
                 column_div = wait.until(
