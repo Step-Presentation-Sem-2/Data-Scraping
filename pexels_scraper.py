@@ -1,5 +1,8 @@
+import requests
 from base_scraper import BaseScraper
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 
 
 class PexelsScraper(BaseScraper):
@@ -13,8 +16,47 @@ class PexelsScraper(BaseScraper):
     def scrape_images(self):
         print("PexelScarper scrape_images")
         try:
-            browser = self.init_web_driver()
-            wait = WebDriverWait(browser, 10)
-            self.save_pexel_images(browser, wait, self.website)
+            self.image_meta_repository.open_db_connection()
+            wait = WebDriverWait(self.browser, 10)
+            
+            while self.new_image_count < self.max_new_image_count:
+                # scroll down the page
+                self.scroll_down(self.browser)
+
+                # Ensure the column div is present before proceeding to find images within it
+                column_div = wait.until(
+                    EC.presence_of_element_located(
+                        (By.CSS_SELECTOR, 'div[data-testid="column"]'))
+                )
+                # Find all image by tag "img"
+                images = column_div.find_elements(By.TAG_NAME, 'img')
+                print(images)
+                # Track whether new images are found
+                new_image_found = False
+
+                # Download each image and save the url to found_image
+                for img in images:
+                    img_url = img.get_attribute('src')
+                    if img_url:
+                        try:
+                            img_data = requests.get(img_url).content
+                            img_filename = self.generate_file_name()
+                            if not self.image_meta_repository.is_image_scraped(img_url):
+                                self.image_repository.save_image(
+                                    img_data, img_filename)
+                                self.image_meta_repository.save_image_meta(
+                                    img_url, self.website_url, "")
+                                new_image_found = True
+                        except Exception as e:
+                            print(
+                                "failed to download image at {img_url} : {e}")
+
+                if not new_image_found:
+                    self.new_image_count += 1
+                else:
+                    self.new_image_count = 0
+
+            self.image_meta_repository.close_db_connection()
+
         except Exception as e:
             print("Exception", e)
