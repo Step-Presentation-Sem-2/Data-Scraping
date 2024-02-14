@@ -1,3 +1,4 @@
+import time
 import requests
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
@@ -15,18 +16,19 @@ class UnsplashScraper(BaseScraper):
         print("UnsplashScraper init")
         super().__init__(self.website, self.image_repository_bucket)
         self.new_image_found = False
+        self.web_driver = None
 
     def scrape_images(self):
         print("UnsplashScraper scrape_images")
 
         try:
             self.image_meta_repository.open_db_connection()
-            wait = WebDriverWait(self.headless_browser, 10)
+            self.web_driver = WebDriverWait(self.headless_browser, 10)
 
             while self.new_image_count < self.max_new_image_count:
                 self.scrape_next_images()
 
-                images_container = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,
+                images_container = self.web_driver.until(EC.presence_of_element_located((By.CSS_SELECTOR,
                                                                               'div[data-test="search-photos-route"]')))
                 images = images_container.find_elements(By.CSS_SELECTOR, 'img[data-test="photo-grid-masonry-img"]')
                 self.save_images(images)
@@ -62,6 +64,9 @@ class UnsplashScraper(BaseScraper):
 
     def scrape_next_images(self):
         if self.scraped_image_count <= self.batch_size:
-            self.scroll_down()
+            load_more_button = self.web_driver.find_element(By.XPATH, "//button[contains(text(), 'Load more')]")
+            if load_more_button is not None:
+                load_more_button.click()
+                time.sleep(3)
         else:
             print(f"Scraped {self.scraped_image_count} images successfully")
