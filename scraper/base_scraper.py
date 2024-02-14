@@ -2,8 +2,16 @@
 # from selenium.webdriver.chrome.options import Options
 import validators
 import hashlib
+import time
+import os
+from datetime import datetime
 from image_repository.image_meta_repository import ImageMetaRepository
 from image_repository.image_repository import ImageRepository
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from dotenv import load_dotenv
+load_dotenv()
 
 
 def get_next_set_of_images():
@@ -16,25 +24,56 @@ class BaseScraper:
     website_url = ""
     image_meta_repository = ImageMetaRepository()
     image_repository = None
-    batch_size = 200
+    batch_size = 50
     scraped_image_count = 0
+    new_image_count = 0  # Counter to scroll without new images
+    max_new_image_count = 3  # Max no of scrolls without new image before breaking
+    driver_path = os.getenv("driver_path")
+    browser = ""
 
     def __init__(self, scrape_website_url: str, image_repository_bucket: str):
         print("initializing BaseScraper")
         if validators.url(scrape_website_url):
             self.website_url = scrape_website_url
-            self.init_web_driver()
+            self.browser = self.init_web_driver()
         else:
             raise Exception("Invalid URL")
 
         self.image_repository = ImageRepository(image_repository_bucket)
 
+    def generate_file_name(self):
+        """
+        Generates a unique file name based on the current datetime.
+        :output: A string representing the file name.
+        """
+        current_time = datetime.now()
+        time_in_format = current_time.strftime("%d-%m-%Y-%H-%M-%S-%f")
+        file_name = f"{time_in_format}.jpg"
+        return file_name
+
     def init_web_driver(self):
+        """
+        Starts a new Selenium browser session.
+        :output: An instance of a Selenium browser.
+        """
         print("init_web_driver")
-        # webdriver_options = Options()
-        # webdriver_options.headless = True
-        # driver = webdriver.Chrome(ChromeDriverManager().install())
-        # driver.get(self.website_url)
+        chrome_options = Options()
+        chrome_options.add_argument('--ignore-ssl-errors=yes')
+        chrome_options.add_argument('--ignore-certificate-errors')
+        print("self.driver_path", self.driver_path)
+        service = Service(executable_path=self.driver_path)
+        browser = webdriver.Chrome(service=service, options=chrome_options)
+        browser.get(self.website_url)
+        return browser
+
+    def scroll_down(self, browser):
+        """
+        Scrolls down the webpage in the given browser session.
+        :input browser: The Selenium browser instance.
+        """
+        browser.execute_script(
+            "window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(5)  # Let the page load
 
     def scrape_images(self):
         print("scrape_images")
