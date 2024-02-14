@@ -1,13 +1,11 @@
-# from selenium import webdriver
-# from selenium.webdriver.chrome.options import Options
+import os
 import validators
-import hashlib
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+
 from image_repository.image_meta_repository import ImageMetaRepository
 from image_repository.image_repository import ImageRepository
-
-
-def get_next_set_of_images():
-    print("get next set of images")
 
 
 class BaseScraper:
@@ -18,6 +16,7 @@ class BaseScraper:
     image_repository = None
     batch_size = 200
     scraped_image_count = 0
+    headless_browser = None
 
     def __init__(self, scrape_website_url: str, image_repository_bucket: str):
         print("initializing BaseScraper")
@@ -31,10 +30,17 @@ class BaseScraper:
 
     def init_web_driver(self):
         print("init_web_driver")
-        # webdriver_options = Options()
-        # webdriver_options.headless = True
-        # driver = webdriver.Chrome(ChromeDriverManager().install())
-        # driver.get(self.website_url)
+
+        driver_path = os.getenv("driver_path")
+
+        chrome_options = Options()
+        chrome_options.add_argument('--ignore-ssl-errors=yes')
+        chrome_options.add_argument('--ignore-certificate-errors')
+        chrome_options.headless = True
+        chrome_options.add_argument("--window-size=1920,1200")
+
+        service = Service(executable_path=driver_path)
+        self.headless_browser = webdriver.Chrome(service=service, options=chrome_options)
 
     def scrape_images(self):
         print("scrape_images")
@@ -50,8 +56,3 @@ class BaseScraper:
             self.image_repository.save_image(image, url)
             self.image_meta_repository.save_image_meta(url, host, e_tag)
         self.image_meta_repository.close_db_connection()
-
-    def hash_bytes(self, content: bytes):
-        image_hash = hashlib.md5()
-        image_hash.update(content)
-        return image_hash.hexdigest()

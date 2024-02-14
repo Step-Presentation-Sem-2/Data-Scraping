@@ -1,5 +1,8 @@
+from dotenv import load_dotenv
 from scraper.image_scraper_factory import ImageScraperFactory
 from scraper.image_source import ImageSource
+
+load_dotenv()
 
 
 def main():
