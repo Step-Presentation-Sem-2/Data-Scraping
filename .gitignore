@@ -6,4 +6,5 @@ pexel_images_new/
 __pycache__/*
 newfolder/
 scraper/__pycache__/*
+website_scraper/__pycache__/*
 
