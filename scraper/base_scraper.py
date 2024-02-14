@@ -2,8 +2,8 @@
 # from selenium.webdriver.chrome.options import Options
 import validators
 import hashlib
-from image_meta_repository import ImageMetaRepository
-from image_repository import ImageRepository
+from image_repository.image_meta_repository import ImageMetaRepository
+from image_repository.image_repository import ImageRepository
 
 
 def get_next_set_of_images():
