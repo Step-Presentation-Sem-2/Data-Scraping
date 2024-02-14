@@ -1,4 +1,6 @@
 import requests
+import time
+import sys
 from scraper.base_scraper import BaseScraper
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -20,9 +22,7 @@ class PexelsScraper(BaseScraper):
             wait = WebDriverWait(self.browser, 10)
 
             while self.new_image_count < self.max_new_image_count:
-                # scroll down the page
                 self.scrape_next_images()
-
                 # Ensure the column div is present before proceeding to find images within it
                 column_div = wait.until(
                     EC.presence_of_element_located(
@@ -41,12 +41,14 @@ class PexelsScraper(BaseScraper):
                         try:
                             img_data = requests.get(img_url).content
                             img_filename = self.generate_file_name()
+                            print("Image data scraped:", img_url)
                             if not self.image_meta_repository.is_image_scraped(img_url):
                                 self.image_repository.save_image(
                                     img_data, img_filename)
                                 self.image_meta_repository.save_image_meta(
                                     img_url, self.website_url, "")
                                 new_image_found = True
+                                self.scraped_image_count += 1
 
                         except Exception as e:
                             print(
@@ -61,3 +63,10 @@ class PexelsScraper(BaseScraper):
 
         except Exception as e:
             print("Exception", e)
+
+    def scrape_next_images(self):
+        if self.scraped_image_count <= self.batch_size:
+            self.scroll_down(self.browser)
+        else:
+            print(f"Scraped {self.scraped_image_count} images successfully")
+            sys.exit()

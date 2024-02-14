@@ -10,6 +10,8 @@ from image_repository.image_repository import ImageRepository
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
+from dotenv import load_dotenv
+load_dotenv()
 
 
 def get_next_set_of_images():
@@ -22,7 +24,7 @@ class BaseScraper:
     website_url = ""
     image_meta_repository = ImageMetaRepository()
     image_repository = None
-    batch_size = 200
+    batch_size = 50
     scraped_image_count = 0
     new_image_count = 0  # Counter to scroll without new images
     max_new_image_count = 3  # Max no of scrolls without new image before breaking
@@ -77,7 +79,6 @@ class BaseScraper:
         print("scrape_images")
 
     def scrape_next_images(self):
-        self.scroll_down(self.browser)
         print("scrape_next_images")
 
     def save_image(self, image: bytes, url: str, host: str, e_tag: str):
