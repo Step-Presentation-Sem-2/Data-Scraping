@@ -1,5 +1,5 @@
-from image_scraper_factory import ImageScraperFactory
-from image_source import ImageSource
+from scraper.image_scraper_factory import ImageScraperFactory
+from scraper.image_source import ImageSource
 
 
 def main():
