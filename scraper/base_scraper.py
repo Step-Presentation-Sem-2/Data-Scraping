@@ -13,7 +13,7 @@ class BaseScraper(ABC):
     """Base scraper class used which can be implemented by each of the image scraper"""
 
     website_url = ""
-    image_meta_repository = ImageMetaRepository()
+    image_meta_repository = None
     image_repository = None
     batch_size = 200
     scraped_image_count = 0
@@ -28,12 +28,13 @@ class BaseScraper(ABC):
             raise Exception("Invalid URL")
 
         self.image_repository = ImageRepository(image_repository_bucket)
+        self.image_meta_repository = ImageMetaRepository()
 
     @abstractmethod
     def scrape_images(self):
         pass
 
-    @@abstractmethod
+    @abstractmethod
     def scrape_next_images(self):
         pass
 
