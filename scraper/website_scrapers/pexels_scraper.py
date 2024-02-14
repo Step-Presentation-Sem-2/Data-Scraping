@@ -47,7 +47,7 @@ class PexelsScraper(BaseScraper):
                                 self.image_meta_repository.save_image_meta(
                                     img_url, self.website_url, "")
                                 new_image_found = True
-                                
+
                         except Exception as e:
                             print(
                                 "failed to download image at {img_url} : {e}")

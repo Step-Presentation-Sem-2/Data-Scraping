@@ -2,15 +2,15 @@
 # from selenium.webdriver.chrome.options import Options
 import validators
 import hashlib
-import time, os
+import time
+import os
 from datetime import datetime
 from image_repository.image_meta_repository import ImageMetaRepository
 from image_repository.image_repository import ImageRepository
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-from dotenv import load_dotenv
-load_dotenv()
+
 
 def get_next_set_of_images():
     print("get next set of images")
@@ -48,7 +48,7 @@ class BaseScraper:
         time_in_format = current_time.strftime("%d-%m-%Y-%H-%M-%S-%f")
         file_name = f"{time_in_format}.jpg"
         return file_name
-    
+
     def init_web_driver(self):
         """
         Starts a new Selenium browser session.
