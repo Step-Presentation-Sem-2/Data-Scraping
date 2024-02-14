@@ -1,5 +1,4 @@
 import requests
-import time
 import sys
 from scraper.base_scraper import BaseScraper
 from selenium.webdriver.support.ui import WebDriverWait
@@ -19,7 +18,7 @@ class PexelsScraper(BaseScraper):
         print("PexelScarper scrape_images")
         try:
             self.image_meta_repository.open_db_connection()
-            wait = WebDriverWait(self.browser, 10)
+            wait = WebDriverWait(self.headless_browser, 10)
 
             while self.new_image_count < self.max_new_image_count:
                 self.scrape_next_images()
@@ -51,8 +50,7 @@ class PexelsScraper(BaseScraper):
                                 self.scraped_image_count += 1
 
                         except Exception as e:
-                            print(
-                                "failed to download image at {img_url} : {e}")
+                            print(f"failed to download image at {img_url} : {e}")
 
                 if not new_image_found:
                     self.new_image_count += 1
@@ -66,7 +64,7 @@ class PexelsScraper(BaseScraper):
 
     def scrape_next_images(self):
         if self.scraped_image_count <= self.batch_size:
-            self.scroll_down(self.browser)
+            self.scroll_down()
         else:
             print(f"Scraped {self.scraped_image_count} images successfully")
             sys.exit()

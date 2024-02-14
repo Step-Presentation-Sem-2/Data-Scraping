@@ -2,6 +2,7 @@ import sys
 import time
 import requests
 from scraper.base_scraper import BaseScraper
+from lib.utils import hash_bytes
 
 
 class ThisPersonDoesnotExistScraper(BaseScraper):
@@ -18,7 +19,7 @@ class ThisPersonDoesnotExistScraper(BaseScraper):
         if 200 <= response.status_code < 300:
             """In the case of https://thispersondoesnotexist.com/ we dont have the src attribute in HTML as the context 
             returned from the server a jpeg. So save MD5 hash of the image as the url"""
-            image_hash = self.hash_bytes(response.content)
+            image_hash = hash_bytes(response.content)
             self.save_image(response.content, image_hash, self.website, "")
             self.scraped_image_count += 1
             self.scrape_next_images()
