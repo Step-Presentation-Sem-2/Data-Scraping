@@ -1,5 +1,6 @@
 import os
 import validators
+from abc import ABC, abstractmethod
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -8,7 +9,7 @@ from image_repository.image_meta_repository import ImageMetaRepository
 from image_repository.image_repository import ImageRepository
 
 
-class BaseScraper:
+class BaseScraper(ABC):
     """Base scraper class used which can be implemented by each of the image scraper"""
 
     website_url = ""
@@ -28,6 +29,14 @@ class BaseScraper:
 
         self.image_repository = ImageRepository(image_repository_bucket)
 
+    @abstractmethod
+    def scrape_images(self):
+        pass
+
+    @@abstractmethod
+    def scrape_next_images(self):
+        pass
+
     def init_web_driver(self):
         print("init_web_driver")
 
@@ -41,12 +50,6 @@ class BaseScraper:
 
         service = Service(executable_path=driver_path)
         self.headless_browser = webdriver.Chrome(service=service, options=chrome_options)
-
-    def scrape_images(self):
-        print("scrape_images")
-
-    def scrape_next_images(self):
-        print("scrape_next_images")
 
     def save_image(self, image: bytes, url: str, host: str, e_tag: str):
         self.image_meta_repository.open_db_connection()
