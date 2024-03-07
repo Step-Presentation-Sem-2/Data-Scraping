@@ -1,3 +1,5 @@
+import sched
+import time
 import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -31,6 +33,16 @@ class IstockScraper(BaseScraper):
                     file_name = f"image_{current_page}_{i}.jpg"
 
         driver.quit()
+
+# Create scheduler instance
+scheduler = sched.scheduler(time.time, time.sleep)
+
+# Schedule the function again after 300 seconds
+def scheduled_scraping():
+    print("Scheduled Scraping Started at:", time.ctime())
+    scraper = IstockScraper()
+    scraper.scrape()
+    scheduler.enter(300, 1, scheduled_scraping)
 
 # Scraper Factory
 class ScraperFactory:
