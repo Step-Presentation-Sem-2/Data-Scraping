@@ -24,7 +24,7 @@ class BaseScraper:
     website_url = ""
     image_meta_repository = ImageMetaRepository()
     image_repository = None
-    batch_size = 50
+    batch_size = 1000
     scraped_image_count = 0
     new_image_count = 0  # Counter to scroll without new images
     max_new_image_count = 3  # Max no of scrolls without new image before breaking
@@ -60,6 +60,11 @@ class BaseScraper:
         chrome_options = Options()
         chrome_options.add_argument('--ignore-ssl-errors=yes')
         chrome_options.add_argument('--ignore-certificate-errors')
+        # Ensure headless mode is enabled
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+
         print("self.driver_path", self.driver_path)
         service = Service(executable_path=self.driver_path)
         browser = webdriver.Chrome(service=service, options=chrome_options)
@@ -71,9 +76,10 @@ class BaseScraper:
         Scrolls down the webpage in the given browser session.
         :input browser: The Selenium browser instance.
         """
+        print("scrolled down")
         browser.execute_script(
             "window.scrollTo(0, document.body.scrollHeight);")
-        time.sleep(5)  # Let the page load
+        time.sleep(10)  # Let the page load
 
     def scrape_images(self):
         print("scrape_images")

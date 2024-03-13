@@ -41,8 +41,8 @@ class PexelsScraper(BaseScraper):
                         try:
                             img_data = requests.get(img_url).content
                             img_filename = self.generate_file_name()
-                            print("Image data scraped:", img_url)
                             if not self.image_meta_repository.is_image_scraped(img_url):
+                                print("Image data scraped:", img_url)
                                 self.image_repository.save_image(
                                     img_data, img_filename)
                                 self.image_meta_repository.save_image_meta(
@@ -62,9 +62,12 @@ class PexelsScraper(BaseScraper):
             self.image_meta_repository.close_db_connection()
 
         except Exception as e:
-            print("Exception", e)
+            time.sleep(10)
+            self.scrape_next_images()
+            print("Exception occured in scrape_images")
 
     def scrape_next_images(self):
+        print("Scraped Next Image called")
         if self.scraped_image_count <= self.batch_size:
             self.scroll_down(self.browser)
         else:
