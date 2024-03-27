@@ -11,6 +11,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from dotenv import load_dotenv
+from webdriver_manager.chrome import ChromeDriverManager
 load_dotenv()
 
 
